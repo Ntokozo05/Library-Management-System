@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header fade-in">
+            <h1>📚 Hlengiwe Library Management System</h1>
+            <p class="subtitle">Your Digital Library Solution</p>
+        </header>
+
+        <!-- Welcome Panel -->
+        <section class="welcome-panel fade-in">
+            <div class="welcome-message">Welcome to the Hlengiwe Library Management System!</div>
+            <div class="datetime" id="datetime"></div>
+            <div class="quote-banner" id="quoteBanner">
+                "Today a reader, tomorrow a leader."
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats-container fade-in">
+            <div class="stat-card total-books">
+                <div class="stat-label">📘 Total Books: </div>
+                <div class="stat-number" id="totalBooks">123</div>
+            </div>
+            <div class="stat-card available-books">
+                <div class="stat-label">🟢 Available Books</div>
+                <div class="stat-number" id="availableBooks">98</div>
+            </div>
+            <div class="stat-card borrowed-books">
+                <div class="stat-label">🔴 Borrowed Books</div>
+                <div class="stat-number" id="borrowedBooks">25</div>
+            </div>
+            <div class="stat-card total-users">
+                <div class="stat-label">👥 Total Users</div>
+                <div class="stat-number" id="totalUsers">40</div>
+            </div>
+        </section>
+
+        <!-- Navigation Sections -->
+        <main class="nav-sections fade-in">
+            <!-- Book Management -->
+            <section class="nav-section">
+                <h2 class="section-title">📚 Book Management</h2>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="navigateTo('view-books')">
+                        <span class="icon">👀</span>
+                        View All Books
+                    </button>
+                    <button class="nav-button" onclick="navigateTo('add-book')">
+                        <span class="icon">➕</span>
+                        Add New Book
+                    </button>
+                    <button class="nav-button" onclick="navigateTo('search-books')">
+                        <span class="icon">🔍</span>
+                        Search Books
+                    </button>
+                </div>
+            </section>
+
+            <!-- User Management -->
+            <section class="nav-section">
+                <h2 class="section-title">👤 User Management</h2>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="navigateTo('register-user')">
+                        <span class="icon">📝</span>
+                        Register New User
+                    </button>
+                    <button class="nav-button" onclick="navigateTo('view-users')">
+                        <span class="icon">👥</span>
+                        View All Users
+                    </button>
+                </div>
+            </section>
+
+            <!-- Transaction Management -->
+            <section class="nav-section">
+                <h2 class="section-title">🔄 Transactions</h2>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="navigateTo('borrow-return')">
+                        <span class="icon">🔄</span>
+                        Borrow/Return Book
+                    </button>
+                    <button class="nav-button" onclick="navigateTo('transaction-history')">
+                        <span class="icon">📋</span>
+                        Transaction History
+                    </button>
+                </div>
+            </section>
+
+            <!-- Reports & Analytics -->
+            <section class="nav-section">
+                <h2 class="section-title">📊 Reports & Analytics</h2>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="navigateTo('reports')">
+                        <span class="icon">📊</span>
+                        View Reports
+                    </button>
+                    <button class="nav-button" onclick="navigateTo('statistics')">
+                        <span class="icon">📈</span>
+                        System Statistics
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Exit Section -->
+        <section class="exit-section fade-in">
+            <button class="exit-button" onclick="exitApplication()">
+                <span class="icon">🚪</span>
+                Exit Application
+            </button>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
