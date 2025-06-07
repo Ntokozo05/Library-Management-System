@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Books - Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="view-books.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header fade-in">
+            <h1>📚 View All Books</h1>
+            <p class="subtitle">Browse and Manage Your Library Collection</p>
+            <button class="back-button" onclick="goBack()">
+                <span class="icon">🏠</span>
+                Back to Home
+            </button>
+        </header>
+
+        <!-- Search and Filter Section -->
+        <section class="search-filter-panel fade-in">
+            <div class="search-container">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search books by title, author, or ISBN..." />
+                    <button class="clear-search" id="clearSearch" onclick="clearSearch()">✕</button>
+                </div>
+            </div>
+            
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="categoryFilter">Category:</label>
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Non-Fiction">Non-Fiction</option>
+                        <option value="Science">Science</option>
+                        <option value="History">History</option>
+                        <option value="Biography">Biography</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Mystery">Mystery</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="statusFilter">Status:</label>
+                    <select id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="Available">Available</option>
+                        <option value="Borrowed">Borrowed</option>
+                        <option value="Reserved">Reserved</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sortBy">Sort By:</label>
+                    <select id="sortBy">
+                        <option value="title">Title (A-Z)</option>
+                        <option value="title-desc">Title (Z-A)</option>
+                        <option value="author">Author (A-Z)</option>
+                        <option value="author-desc">Author (Z-A)</option>
+                        <option value="year">Year (Newest)</option>
+                        <option value="year-desc">Year (Oldest)</option>
+                    </select>
+                </div>
+                
+                <button class="reset-filters" onclick="resetFilters()">Reset Filters</button>
+            </div>
+        </section>
+
+        <!-- Statistics Bar -->
+        <section class="books-stats fade-in">
+            <div class="stat-item">
+                <span class="stat-number" id="totalBooksCount">0</span>
+                <span class="stat-label">Total Books</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="availableBooksCount">0</span>
+                <span class="stat-label">Available</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="borrowedBooksCount">0</span>
+                <span class="stat-label">Borrowed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="filteredBooksCount">0</span>
+                <span class="stat-label">Showing</span>
+            </div>
+        </section>
+
+        <!-- View Toggle -->
+        <section class="view-controls fade-in">
+            <div class="view-toggle">
+                <button class="view-btn active" id="gridView" onclick="toggleView('grid')">
+                    <span class="icon">⊞</span> Grid View
+                </button>
+                <button class="view-btn" id="listView" onclick="toggleView('list')">
+                    <span class="icon">☰</span> List View
+                </button>
+            </div>
+            <div class="bulk-actions">
+                <button class="bulk-btn" onclick="selectAll()">Select All</button>
+                <button class="bulk-btn" onclick="deselectAll()">Deselect All</button>
+                <button class="bulk-btn danger" onclick="deleteSelected()">Delete Selected</button>
+            </div>
+        </section>
+
+        <!-- Books Container -->
+        <main class="books-container fade-in" id="booksContainer">
+            <!-- Books will be dynamically loaded here -->
+        </main>
+
+        <!-- Pagination -->
+        <section class="pagination-container fade-in" id="paginationContainer">
+            <!-- Pagination will be dynamically generated -->
+        </section>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+            <p>Loading books...</p>
+        </div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="no-results-icon">📚</div>
+            <h3>No books found</h3>
+            <p>Try adjusting your search criteria or filters</p>
+        </div>
+    </div>
+
+    <!-- Book Detail Modal -->
+    <div class="modal-overlay" id="bookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Book Details</h2>
+                <button class="close-modal" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Book details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" onclick="closeModal()">Close</button>
+                <button class="btn primary" id="modalActionBtn">Edit Book</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="view-books.js"></script>
+</body>
+</html>

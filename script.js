@@ -40,19 +40,54 @@ function rotateQuote() {
 // Navigation function
 function navigateTo(section) {
     // Add a subtle animation effect
-    event.target.style.transform = 'scale(0.95)';
+    event.target.style.transform = "scale(0.95)"
     setTimeout(() => {
-        event.target.style.transform = 'scale(1)';
-    }, 150);
-
-    // Here you would typically navigate to different pages or sections
-    console.log(`Navigating to: ${section}`);
-    alert(`Navigating to: ${section.replace('-', ' ').toUpperCase()}`);
-    
-    // In a real application, you might use:
-    // window.location.href = `${section}.html`;
-    // or implement single-page application routing
-}
+      event.target.style.transform = "scale(1)"
+    }, 150)
+  
+    // Navigate to different pages based on section
+    switch (section) {
+      case "view-books":
+        window.location.href = "view-books.html"
+        break
+      case "add-book":
+        // window.location.href = 'add-book.html';
+        alert("Add Book page - Coming Soon!")
+        break
+      case "search-books":
+        // window.location.href = 'search-books.html';
+        alert("Search Books page - Coming Soon!")
+        break
+      case "register-user":
+        // window.location.href = 'register-user.html';
+        alert("Register User page - Coming Soon!")
+        break
+      case "view-users":
+        // window.location.href = 'view-users.html';
+        alert("View Users page - Coming Soon!")
+        break
+      case "borrow-return":
+        // window.location.href = 'borrow-return.html';
+        alert("Borrow/Return page - Coming Soon!")
+        break
+      case "transaction-history":
+        // window.location.href = 'transaction-history.html';
+        alert("Transaction History page - Coming Soon!")
+        break
+      case "reports":
+        // window.location.href = 'reports.html';
+        alert("Reports page - Coming Soon!")
+        break
+      case "statistics":
+        // window.location.href = 'statistics.html';
+        alert("Statistics page - Coming Soon!")
+        break
+      default:
+        console.log(`Navigation to ${section} not implemented yet`)
+        alert(`${section.replace("-", " ").toUpperCase()} - Coming Soon!`)
+    }
+  }
+  
 
 // Exit application function
 function exitApplication() {
