@@ -51,8 +51,8 @@ function navigateTo(section) {
         window.location.href = "view-books.html"
         break
       case "add-book":
-        // window.location.href = 'add-book.html';
-        alert("Add Book page - Coming Soon!")
+        window.location.href = 'add-book.html';
+        //alert("Add Book page - Coming Soon!")
         break
       case "search-books":
         // window.location.href = 'search-books.html';
