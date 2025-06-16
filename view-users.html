@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Users - Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="view-users.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header fade-in">
+            <h1>👥 View All Users</h1>
+            <p class="subtitle">Manage your library members and their information</p>
+            <div class="header-actions">
+                <button class="back-button" onclick="goBack()">
+                    <span class="icon">🏠</span>
+                    Back to Home
+                </button>
+                <button class="register-user-button" onclick="goToRegisterUser()">
+                    <span class="icon">➕</span>
+                    Register New User
+                </button>
+            </div>
+        </header>
+
+        <!-- Search and Filter Section -->
+        <section class="search-filter-panel fade-in">
+            <div class="search-container">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search users by name, email, or membership number..." />
+                    <button class="clear-search" id="clearSearch" onclick="clearSearch()">✕</button>
+                </div>
+            </div>
+            
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="membershipFilter">Membership Type:</label>
+                    <select id="membershipFilter">
+                        <option value="">All Types</option>
+                        <option value="Student">Student</option>
+                        <option value="Faculty">Faculty</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Public">Public</option>
+                        <option value="Senior">Senior Citizen</option>
+                        <option value="Premium">Premium</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="statusFilter">Status:</label>
+                    <select id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Suspended">Suspended</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sortBy">Sort By:</label>
+                    <select id="sortBy">
+                        <option value="name">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                        <option value="registration">Registration Date (Newest)</option>
+                        <option value="registration-desc">Registration Date (Oldest)</option>
+                        <option value="membership">Membership Type</option>
+                    </select>
+                </div>
+                
+                <button class="reset-filters" onclick="resetFilters()">Reset Filters</button>
+            </div>
+        </section>
+
+        <!-- Statistics Bar -->
+        <section class="users-stats fade-in">
+            <div class="stat-item">
+                <span class="stat-number" id="totalUsersCount">0</span>
+                <span class="stat-label">Total Users</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="activeUsersCount">0</span>
+                <span class="stat-label">Active</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="inactiveUsersCount">0</span>
+                <span class="stat-label">Inactive</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="filteredUsersCount">0</span>
+                <span class="stat-label">Showing</span>
+            </div>
+        </section>
+
+        <!-- View Toggle -->
+        <section class="view-controls fade-in">
+            <div class="view-toggle">
+                <button class="view-btn active" id="cardView" onclick="toggleView('card')">
+                    <span class="icon">⊞</span> Card View
+                </button>
+                <button class="view-btn" id="tableView" onclick="toggleView('table')">
+                    <span class="icon">☰</span> Table View
+                </button>
+            </div>
+            <div class="bulk-actions">
+                <button class="bulk-btn" onclick="selectAll()">Select All</button>
+                <button class="bulk-btn" onclick="deselectAll()">Deselect All</button>
+                <button class="bulk-btn" onclick="exportSelected()">Export Selected</button>
+                <button class="bulk-btn danger" onclick="suspendSelected()">Suspend Selected</button>
+            </div>
+        </section>
+
+        <!-- Users Container -->
+        <main class="users-container fade-in" id="usersContainer">
+            <!-- Users will be dynamically loaded here -->
+        </main>
+
+        <!-- Pagination -->
+        <section class="pagination-container fade-in" id="paginationContainer">
+            <!-- Pagination will be dynamically generated -->
+        </section>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+            <p>Loading users...</p>
+        </div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="no-results-icon">👥</div>
+            <h3>No users found</h3>
+            <p>Try adjusting your search criteria or filters</p>
+        </div>
+    </div>
+
+    <!-- User Detail Modal -->
+    <div class="modal-overlay" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">User Details</h2>
+                <button class="close-modal" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- User details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" onclick="closeModal()">Close</button>
+                <button class="btn primary" id="modalActionBtn">Edit User</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="view-users.js"></script>
+</body>
+</html>

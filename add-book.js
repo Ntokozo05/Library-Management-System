@@ -469,13 +469,7 @@ function addAnotherBook() {
 }
 
 function goBack() {
-    if (hasUnsavedChanges()) {
-        if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
-            window.location.href = 'hlengiwe_library.html';
-        }
-    } else {
-        window.location.href = 'hlengiwe_library.html';
-    }
+    window.location.href = 'hlengiwe_library.html';
 }
 
 function goToViewBooks() {
