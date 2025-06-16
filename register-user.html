@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New User - Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="register-user.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header fade-in">
+            <h1>👤 Register New User</h1>
+            <p class="subtitle">Add a new member to your library system</p>
+            <div class="header-actions">
+                <button class="back-button" onclick="goBack()">
+                    <span class="icon">🏠</span>
+                    Back to Home
+                </button>
+                <button class="view-users-button" onclick="goToViewUsers()">
+                    <span class="icon">👥</span>
+                    View All Users
+                </button>
+            </div>
+        </header>
+
+        <!-- Quick Stats -->
+        <section class="stats-panel fade-in">
+            <div class="stat-card">
+                <div class="stat-number" id="totalUsersCount">0</div>
+                <div class="stat-label">👥 Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeUsersCount">0</div>
+                <div class="stat-label">✅ Active Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="newUsersToday">0</div>
+                <div class="stat-label">🆕 New Today</div>
+            </div>
+        </section>
+
+        <!-- Registration Form -->
+        <main class="form-container fade-in">
+            <form id="registerUserForm" class="user-form" novalidate>
+                
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">👤 Personal Information</h2>
+                    
+                    <div class="form-grid">
+                        <!-- Profile Photo Upload -->
+                        <div class="form-group photo-upload">
+                            <label>Profile Photo</label>
+                            <div class="photo-upload-container">
+                                <div class="photo-preview" id="photoPreview">
+                                    <div class="default-avatar">👤</div>
+                                    <div class="upload-overlay" onclick="document.getElementById('profilePhoto').click()">
+                                        <span class="upload-icon">📷</span>
+                                        <span class="upload-text">Upload Photo</span>
+                                    </div>
+                                </div>
+                                <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" hidden>
+                                <button type="button" class="remove-photo" id="removePhoto" onclick="removeProfilePhoto()" style="display: none;">Remove</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="firstName" class="required">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required 
+                                   placeholder="Enter first name">
+                            <div class="error-message" id="firstNameError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName" class="required">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required 
+                                   placeholder="Enter last name">
+                            <div class="error-message" id="lastNameError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="required">Email Address</label>
+                            <input type="email" id="email" name="email" required 
+                                   placeholder="user@example.com">
+                            <div class="error-message" id="emailError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" 
+                                   placeholder="+1 (555) 123-4567">
+                            <div class="error-message" id="phoneError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth">
+                            <div class="error-message" id="dateOfBirthError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender">
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">🏠 Address Information</h2>
+                    
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="address">Street Address</label>
+                            <input type="text" id="address" name="address" 
+                                   placeholder="123 Main Street">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" 
+                                   placeholder="Johannesburg">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">Province</label>
+                            <input type="text" id="state" name="state" 
+                                   placeholder="Gauteng">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zipCode">ZIP/Postal Code</label>
+                            <input type="text" id="zipCode" name="zipCode" 
+                                   placeholder="10001">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select id="country" name="country">
+                                <option value="South Africa">South Africa</option>
+                                <option value="Lesotho">Lesotho</option>
+                                <option value="Swatini">Swatini</option>
+                                <option value="Botswana">Botswana</option>
+                                <option value="Malawi">Malawi</option>
+                                <option value="Angola">Angola</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Library Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">📚 Library Information</h2>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="membershipType" class="required">Membership Type</label>
+                            <select id="membershipType" name="membershipType" required>
+                                <option value="">Select membership type</option>
+                                <option value="Student">Student</option>
+                                <option value="Faculty">Faculty</option>
+                                <option value="Staff">Staff</option>
+                                <option value="Public">Public</option>
+                                <option value="Senior">Senior Citizen</option>
+                                <option value="Premium">Premium</option>
+                            </select>
+                            <div class="error-message" id="membershipTypeError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentId">Student/Employee ID</label>
+                            <input type="text" id="studentId" name="studentId" 
+                                   placeholder="Enter ID number">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="department">Department/Organization</label>
+                            <input type="text" id="department" name="department" 
+                                   placeholder="Computer Science">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergencyContact">Emergency Contact</label>
+                            <input type="text" id="emergencyContact" name="emergencyContact" 
+                                   placeholder="Contact name and phone">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="notes">Additional Notes</label>
+                            <textarea id="notes" name="notes" rows="3" 
+                                      placeholder="Any additional information about the user..."></textarea>
+                            <div class="character-count">
+                                <span id="notesCount">0</span>/300 characters
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="form-section">
+                    <div class="terms-section">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                            <label for="agreeTerms" class="checkbox-label">
+                                I agree to the <a href="#" onclick="showTerms()">Library Terms and Conditions</a>
+                            </label>
+                            <div class="error-message" id="agreeTermsError"></div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="emailNotifications" name="emailNotifications" checked>
+                            <label for="emailNotifications" class="checkbox-label">
+                                I want to receive email notifications about due dates and library updates
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn secondary" onclick="resetForm()">Reset Form</button>
+                    <button type="button" class="btn secondary" onclick="previewUser()">Preview</button>
+                    <button type="submit" class="btn primary" id="submitBtn">
+                        <span class="btn-text">Register User</span>
+                        <span class="btn-loading" style="display: none;">
+                            <span class="spinner-small"></span>
+                            Registering...
+                        </span>
+                    </button>
+                </div>
+
+            </form>
+        </main>
+
+        <!-- Success Modal -->
+        <div class="modal-overlay" id="successModal">
+            <div class="modal-content success-modal">
+                <div class="success-icon">✅</div>
+                <h2>User Registered Successfully!</h2>
+                <div class="user-card" id="newUserCard">
+                    <!-- New user details will be shown here -->
+                </div>
+                <p id="successMessage">The user has been registered and can now use the library.</p>
+                <div class="modal-actions">
+                    <button class="btn secondary" onclick="registerAnotherUser()">Register Another User</button>
+                    <button class="btn primary" onclick="goToViewUsers()">View All Users</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Modal -->
+        <div class="modal-overlay" id="previewModal">
+            <div class="modal-content preview-modal">
+                <div class="modal-header">
+                    <h2>👤 User Preview</h2>
+                    <button class="close-modal" onclick="closePreview()">✕</button>
+                </div>
+                <div class="modal-body" id="previewContent">
+                    <!-- Preview content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn secondary" onclick="closePreview()">Edit</button>
+                    <button class="btn primary" onclick="submitFromPreview()">Register User</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terms Modal -->
+        <div class="modal-overlay" id="termsModal">
+            <div class="modal-content terms-modal">
+                <div class="modal-header">
+                    <h2>📋 Library Terms and Conditions</h2>
+                    <button class="close-modal" onclick="closeTerms()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="terms-content">
+                        <h3>Library Membership Terms</h3>
+                        <ul>
+                            <li>Members must present valid ID when borrowing books</li>
+                            <li>Books must be returned by the due date to avoid late fees</li>
+                            <li>Lost or damaged books must be paid for at replacement cost</li>
+                            <li>Library cards are non-transferable</li>
+                            <li>Members are responsible for all items checked out on their card</li>
+                            <li>Overdue fines are $0.25 per day per item</li>
+                            <li>Membership may be suspended for unpaid fines over $10</li>
+                        </ul>
+                        
+                        <h3>Privacy Policy</h3>
+                        <p>We protect your personal information and only use it for library services. Your borrowing history is kept confidential.</p>
+                        
+                        <h3>Code of Conduct</h3>
+                        <p>All library users must maintain a respectful environment and follow library policies.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn primary" onclick="acceptTerms()">Accept Terms</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script src="register-user.js"></script>
+</body>
+</html>

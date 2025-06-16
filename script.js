@@ -59,12 +59,12 @@ function navigateTo(section) {
         alert("Search Books page - Coming Soon!")
         break
       case "register-user":
-        // window.location.href = 'register-user.html';
-        alert("Register User page - Coming Soon!")
+        window.location.href = 'register-user.html';
+        //alert("Register User page - Coming Soon!")
         break
       case "view-users":
-        // window.location.href = 'view-users.html';
-        alert("View Users page - Coming Soon!")
+        window.location.href = 'view-users.html';
+        //alert("View Users page - Coming Soon!")
         break
       case "borrow-return":
         // window.location.href = 'borrow-return.html';
