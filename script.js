@@ -75,8 +75,8 @@ function navigateTo(section) {
         //alert("Transaction History page - Coming Soon!")
         break
       case "reports":
-        // window.location.href = 'reports.html';
-        alert("Reports page - Coming Soon!")
+        window.location.href = 'reports.html';
+        //alert("Reports page - Coming Soon!")
         break
       case "statistics":
         // window.location.href = 'statistics.html';

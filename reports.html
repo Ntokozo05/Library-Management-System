@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="reports.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header fade-in">
+            <h1>📊 Library Reports</h1>
+            <p class="subtitle">Comprehensive analytics and reporting dashboard</p>
+            <div class="header-actions">
+                <button class="back-button" onclick="goBack()">
+                    <span class="icon">🏠</span>
+                    Back to Home
+                </button>
+                <button class="statistics-button" onclick="goToStatistics()">
+                    <span class="icon">📈</span>
+                    System Statistics
+                </button>
+            </div>
+        </header>
+
+        <!-- Report Categories -->
+        <section class="report-categories fade-in">
+            <div class="category-card active" id="overviewCategory" onclick="switchCategory('overview')">
+                <div class="category-icon">📋</div>
+                <div class="category-title">Overview Reports</div>
+                <div class="category-desc">General library statistics and summaries</div>
+            </div>
+            <div class="category-card" id="booksCategory" onclick="switchCategory('books')">
+                <div class="category-icon">📚</div>
+                <div class="category-title">Book Reports</div>
+                <div class="category-desc">Collection analysis and book statistics</div>
+            </div>
+            <div class="category-card" id="usersCategory" onclick="switchCategory('users')">
+                <div class="category-icon">👥</div>
+                <div class="category-title">User Reports</div>
+                <div class="category-desc">Member activity and demographics</div>
+            </div>
+            <div class="category-card" id="transactionsCategory" onclick="switchCategory('transactions')">
+                <div class="category-icon">🔄</div>
+                <div class="category-title">Transaction Reports</div>
+                <div class="category-desc">Borrowing patterns and circulation data</div>
+            </div>
+            <div class="category-card" id="financialCategory" onclick="switchCategory('financial')">
+                <div class="category-icon">💰</div>
+                <div class="category-title">Financial Reports</div>
+                <div class="category-desc">Fees, fines, and revenue analysis</div>
+            </div>
+        </section>
+
+        <!-- Report Filters -->
+        <section class="report-filters fade-in">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="reportPeriod">Report Period:</label>
+                    <select id="reportPeriod">
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month" selected>This Month</option>
+                        <option value="quarter">This Quarter</option>
+                        <option value="year">This Year</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group" id="customDateRange" style="display: none;">
+                    <label for="startDate">From:</label>
+                    <input type="date" id="startDate">
+                    <label for="endDate">To:</label>
+                    <input type="date" id="endDate">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="reportFormat">Format:</label>
+                    <select id="reportFormat">
+                        <option value="view">View Online</option>
+                        <option value="pdf">Download PDF</option>
+                        <option value="excel">Export Excel</option>
+                        <option value="csv">Export CSV</option>
+                    </select>
+                </div>
+                
+                <button class="generate-btn" onclick="generateReport()">
+                    <span class="icon">📊</span>
+                    Generate Report
+                </button>
+            </div>
+        </section>
+
+        <!-- Overview Reports -->
+        <main class="reports-container fade-in" id="overviewReports">
+            <div class="report-grid">
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📊 Library Summary</h3>
+                        <button class="export-btn" onclick="exportReport('summary')">📤</button>
+                    </div>
+                    <div class="report-content" id="summaryReport">
+                        <!-- Summary content will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📈 Activity Trends</h3>
+                        <button class="export-btn" onclick="exportReport('trends')">📤</button>
+                    </div>
+                    <div class="report-content">
+                        <div class="chart-container">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>🎯 Performance Metrics</h3>
+                        <button class="export-btn" onclick="exportReport('performance')">📤</button>
+                    </div>
+                    <div class="report-content" id="performanceReport">
+                        <!-- Performance metrics will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>⚠️ Issues & Alerts</h3>
+                        <button class="export-btn" onclick="exportReport('alerts')">📤</button>
+                    </div>
+                    <div class="report-content" id="alertsReport">
+                        <!-- Alerts will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Book Reports -->
+        <main class="reports-container fade-in" id="booksReports" style="display: none;">
+            <div class="report-grid">
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📚 Collection Overview</h3>
+                        <button class="export-btn" onclick="exportReport('collection')">📤</button>
+                    </div>
+                    <div class="report-content" id="collectionReport">
+                        <!-- Collection data will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>🔥 Popular Books</h3>
+                        <button class="export-btn" onclick="exportReport('popular')">📤</button>
+                    </div>
+                    <div class="report-content" id="popularBooksReport">
+                        <!-- Popular books will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📊 Category Distribution</h3>
+                        <button class="export-btn" onclick="exportReport('categories')">📤</button>
+                    </div>
+                    <div class="report-content">
+                        <div class="chart-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📋 Inventory Status</h3>
+                        <button class="export-btn" onclick="exportReport('inventory')">📤</button>
+                    </div>
+                    <div class="report-content" id="inventoryReport">
+                        <!-- Inventory status will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- User Reports -->
+        <main class="reports-container fade-in" id="usersReports" style="display: none;">
+            <div class="report-grid">
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>👥 User Demographics</h3>
+                        <button class="export-btn" onclick="exportReport('demographics')">📤</button>
+                    </div>
+                    <div class="report-content">
+                        <div class="chart-container">
+                            <canvas id="demographicsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>🏆 Top Borrowers</h3>
+                        <button class="export-btn" onclick="exportReport('topBorrowers')">📤</button>
+                    </div>
+                    <div class="report-content" id="topBorrowersReport">
+                        <!-- Top borrowers will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📊 User Activity</h3>
+                        <button class="export-btn" onclick="exportReport('userActivity')">📤</button>
+                    </div>
+                    <div class="report-content" id="userActivityReport">
+                        <!-- User activity will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📈 Registration Trends</h3>
+                        <button class="export-btn" onclick="exportReport('registrations')">📤</button>
+                    </div>
+                    <div class="report-content">
+                        <div class="chart-container">
+                            <canvas id="registrationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Transaction Reports -->
+        <main class="reports-container fade-in" id="transactionsReports" style="display: none;">
+            <div class="report-grid">
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>🔄 Circulation Summary</h3>
+                        <button class="export-btn" onclick="exportReport('circulation')">📤</button>
+                    </div>
+                    <div class="report-content" id="circulationReport">
+                        <!-- Circulation data will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📅 Daily Activity</h3>
+                        <button class="export-btn" onclick="exportReport('dailyActivity')">📤</button>
+                    </div>
+                    <div class="report-content">
+                        <div class="chart-container">
+                            <canvas id="dailyActivityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>⏰ Peak Hours</h3>
+                        <button class="export-btn" onclick="exportReport('peakHours')">📤</button>
+                    </div>
+                    <div class="report-content" id="peakHoursReport">
+                        <!-- Peak hours data will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>🔄 Return Patterns</h3>
+                        <button class="export-btn" onclick="exportReport('returnPatterns')">📤</button>
+                    </div>
+                    <div class="report-content" id="returnPatternsReport">
+                        <!-- Return patterns will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Financial Reports -->
+        <main class="reports-container fade-in" id="financialReports" style="display: none;">
+            <div class="report-grid">
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>💰 Revenue Summary</h3>
+                        <button class="export-btn" onclick="exportReport('revenue')">📤</button>
+                    </div>
+                    <div class="report-content" id="revenueReport">
+                        <!-- Revenue data will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>⚠️ Outstanding Fines</h3>
+                        <button class="export-btn" onclick="exportReport('fines')">📤</button>
+                    </div>
+                    <div class="report-content" id="finesReport">
+                        <!-- Fines data will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>📊 Fee Collection</h3>
+                        <button class="export-btn" onclick="exportReport('feeCollection')">📤</button>
+                    </div>
+                    <div class="report-content">
+                        <div class="chart-container">
+                            <canvas id="feeCollectionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>💳 Payment Methods</h3>
+                        <button class="export-btn" onclick="exportReport('paymentMethods')">📤</button>
+                    </div>
+                    <div class="report-content" id="paymentMethodsReport">
+                        <!-- Payment methods data will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>Generating report...</p>
+        </div>
+
+        <!-- Report Modal -->
+        <div class="modal-overlay" id="reportModal">
+            <div class="modal-content large-modal">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Detailed Report</h2>
+                    <button class="close-modal" onclick="closeModal()">✕</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Detailed report content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn secondary" onclick="closeModal()">Close</button>
+                    <button class="btn primary" onclick="printReport()">Print Report</button>
+                    <button class="btn primary" onclick="downloadReport()">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="reports.js"></script>
+</body>
+</html>
