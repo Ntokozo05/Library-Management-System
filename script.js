@@ -67,12 +67,12 @@ function navigateTo(section) {
         //alert("View Users page - Coming Soon!")
         break
       case "borrow-return":
-        // window.location.href = 'borrow-return.html';
-        alert("Borrow/Return page - Coming Soon!")
+        window.location.href = 'borrow-return.html';
+        //alert("Borrow/Return page - Coming Soon!")
         break
       case "transaction-history":
-        // window.location.href = 'transaction-history.html';
-        alert("Transaction History page - Coming Soon!")
+        window.location.href = 'transaction-history.html';
+        //alert("Transaction History page - Coming Soon!")
         break
       case "reports":
         // window.location.href = 'reports.html';

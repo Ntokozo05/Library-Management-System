@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History - Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="transaction-history.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header fade-in">
+            <h1>📋 Transaction History</h1>
+            <p class="subtitle">Complete record of all library transactions</p>
+            <div class="header-actions">
+                <button class="back-button" onclick="goBack()">
+                    <span class="icon">🏠</span>
+                    Back to Home
+                </button>
+                <button class="borrow-return-button" onclick="goToBorrowReturn()">
+                    <span class="icon">📚</span>
+                    Borrow/Return
+                </button>
+            </div>
+        </header>
+
+        <!-- Statistics Dashboard -->
+        <section class="stats-dashboard fade-in">
+            <div class="stat-card">
+                <div class="stat-number" id="totalTransactionsCount">0</div>
+                <div class="stat-label">📊 Total Transactions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeBorrowsCount">0</div>
+                <div class="stat-label">📚 Active Borrows</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalReturnsCount">0</div>
+                <div class="stat-label">📥 Total Returns</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalRenewalsCount">0</div>
+                <div class="stat-label">🔄 Total Renewals</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="overdueTransactionsCount">0</div>
+                <div class="stat-label">⚠️ Overdue</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalLateFees">R0.00</div>
+                <div class="stat-label">💰 Late Fees</div>
+            </div>
+        </section>
+
+        <!-- Search and Filter Panel -->
+        <section class="search-filter-panel fade-in">
+            <div class="search-container">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search by user name, book title, or transaction ID..." />
+                    <button class="clear-search" id="clearSearch" onclick="clearSearch()">✕</button>
+                </div>
+            </div>
+            
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="transactionTypeFilter">Transaction Type:</label>
+                    <select id="transactionTypeFilter">
+                        <option value="">All Types</option>
+                        <option value="borrow">Borrow</option>
+                        <option value="return">Return</option>
+                        <option value="renew">Renewal</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="statusFilter">Status:</label>
+                    <select id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="returned">Returned</option>
+                        <option value="overdue">Overdue</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="dateFromFilter">From Date:</label>
+                    <input type="date" id="dateFromFilter">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="dateToFilter">To Date:</label>
+                    <input type="date" id="dateToFilter">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sortBy">Sort By:</label>
+                    <select id="sortBy">
+                        <option value="date-desc">Date (Newest First)</option>
+                        <option value="date-asc">Date (Oldest First)</option>
+                        <option value="user">User Name</option>
+                        <option value="book">Book Title</option>
+                        <option value="type">Transaction Type</option>
+                        <option value="status">Status</option>
+                    </select>
+                </div>
+                
+                <button class="reset-filters" onclick="resetFilters()">Reset Filters</button>
+            </div>
+        </section>
+
+        <!-- Quick Filters -->
+        <section class="quick-filters fade-in">
+            <button class="quick-filter-btn" onclick="applyQuickFilter('today')">Today</button>
+            <button class="quick-filter-btn" onclick="applyQuickFilter('week')">This Week</button>
+            <button class="quick-filter-btn" onclick="applyQuickFilter('month')">This Month</button>
+            <button class="quick-filter-btn" onclick="applyQuickFilter('overdue')">Overdue</button>
+            <button class="quick-filter-btn" onclick="applyQuickFilter('active')">Active Borrows</button>
+        </section>
+
+        <!-- View Controls -->
+        <section class="view-controls fade-in">
+            <div class="view-info">
+                <span id="filteredCount">0</span> transactions found
+            </div>
+            <div class="view-actions">
+                <button class="action-btn" onclick="exportTransactions()">
+                    <span class="icon">📊</span>
+                    Export CSV
+                </button>
+                <button class="action-btn" onclick="generateReport()">
+                    <span class="icon">📈</span>
+                    Generate Report
+                </button>
+            </div>
+        </section>
+
+        <!-- Transactions Table -->
+        <main class="transactions-container fade-in">
+            <div class="transactions-table" id="transactionsTable">
+                <!-- Transactions will be dynamically loaded here -->
+            </div>
+        </main>
+
+        <!-- Pagination -->
+        <section class="pagination-container fade-in" id="paginationContainer">
+            <!-- Pagination will be dynamically generated -->
+        </section>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+            <p>Loading transactions...</p>
+        </div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="no-results-icon">📋</div>
+            <h3>No transactions found</h3>
+            <p>Try adjusting your search criteria or filters</p>
+        </div>
+    </div>
+
+    <!-- Transaction Detail Modal -->
+    <div class="modal-overlay" id="transactionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Transaction Details</h2>
+                <button class="close-modal" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Transaction details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" onclick="closeModal()">Close</button>
+                <button class="btn primary" id="modalActionBtn" onclick="printTransaction()">Print Details</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="transaction-history.js"></script>
+</body>
+</html>

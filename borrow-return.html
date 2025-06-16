@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow/Return Books - Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="borrow-return.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header fade-in">
+            <h1>📚 Borrow/Return Books</h1>
+            <p class="subtitle">Manage book borrowing and returns efficiently</p>
+            <div class="header-actions">
+                <button class="back-button" onclick="goBack()">
+                    <span class="icon">🏠</span>
+                    Back to Home
+                </button>
+                <button class="history-button" onclick="goToTransactionHistory()">
+                    <span class="icon">📋</span>
+                    Transaction History
+                </button>
+            </div>
+        </header>
+
+        <!-- Quick Stats -->
+        <section class="stats-panel fade-in">
+            <div class="stat-card">
+                <div class="stat-number" id="totalBorrowedCount">0</div>
+                <div class="stat-label">📚 Books Borrowed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="overdueCount">0</div>
+                <div class="stat-label">⚠️ Overdue Books</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="todayTransactionsCount">0</div>
+                <div class="stat-label">📅 Today's Transactions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="availableBooksCount">0</div>
+                <div class="stat-label">✅ Available Books</div>
+            </div>
+        </section>
+
+        <!-- Action Tabs -->
+        <section class="action-tabs fade-in">
+            <div class="tab-buttons">
+                <button class="tab-btn active" id="borrowTab" onclick="switchTab('borrow')">
+                    <span class="icon">📖</span>
+                    Borrow Book
+                </button>
+                <button class="tab-btn" id="returnTab" onclick="switchTab('return')">
+                    <span class="icon">📥</span>
+                    Return Book
+                </button>
+                <button class="tab-btn" id="renewTab" onclick="switchTab('renew')">
+                    <span class="icon">🔄</span>
+                    Renew Book
+                </button>
+            </div>
+        </section>
+
+        <!-- Borrow Book Section -->
+        <main class="transaction-container fade-in" id="borrowSection">
+            <div class="transaction-form">
+                <h2 class="section-title">📖 Borrow Book</h2>
+                
+                <form id="borrowForm" class="form-grid">
+                    <!-- User Selection -->
+                    <div class="form-group">
+                        <label for="borrowUserId" class="required">Select User</label>
+                        <div class="search-select">
+                            <input type="text" id="borrowUserSearch" placeholder="Search by name, email, or member ID..." 
+                                   autocomplete="off">
+                            <div class="search-results" id="borrowUserResults"></div>
+                        </div>
+                        <input type="hidden" id="borrowUserId" name="userId" required>
+                        <div class="error-message" id="borrowUserIdError"></div>
+                    </div>
+
+                    <!-- Book Selection -->
+                    <div class="form-group">
+                        <label for="borrowBookId" class="required">Select Book</label>
+                        <div class="search-select">
+                            <input type="text" id="borrowBookSearch" placeholder="Search by title, author, or ISBN..." 
+                                   autocomplete="off">
+                            <div class="search-results" id="borrowBookResults"></div>
+                        </div>
+                        <input type="hidden" id="borrowBookId" name="bookId" required>
+                        <div class="error-message" id="borrowBookIdError"></div>
+                    </div>
+
+                    <!-- Due Date -->
+                    <div class="form-group">
+                        <label for="dueDate" class="required">Due Date</label>
+                        <input type="date" id="dueDate" name="dueDate" required>
+                        <div class="error-message" id="dueDateError"></div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="form-group full-width">
+                        <label for="borrowNotes">Notes (Optional)</label>
+                        <textarea id="borrowNotes" name="notes" rows="3" 
+                                  placeholder="Any special notes about this borrowing..."></textarea>
+                    </div>
+
+                    <div class="form-actions full-width">
+                        <button type="button" class="btn secondary" onclick="resetBorrowForm()">Reset</button>
+                        <button type="submit" class="btn primary">
+                            <span class="btn-text">Process Borrowing</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="spinner-small"></span>
+                                Processing...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Selected Items Preview -->
+                <div class="selection-preview" id="borrowPreview" style="display: none;">
+                    <h3>Transaction Preview</h3>
+                    <div class="preview-content" id="borrowPreviewContent"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Return Book Section -->
+        <main class="transaction-container fade-in" id="returnSection" style="display: none;">
+            <div class="transaction-form">
+                <h2 class="section-title">📥 Return Book</h2>
+                
+                <form id="returnForm" class="form-grid">
+                    <!-- User Selection -->
+                    <div class="form-group">
+                        <label for="returnUserId" class="required">Select User</label>
+                        <div class="search-select">
+                            <input type="text" id="returnUserSearch" placeholder="Search by name, email, or member ID..." 
+                                   autocomplete="off">
+                            <div class="search-results" id="returnUserResults"></div>
+                        </div>
+                        <input type="hidden" id="returnUserId" name="userId" required>
+                        <div class="error-message" id="returnUserIdError"></div>
+                    </div>
+
+                    <!-- Borrowed Books List -->
+                    <div class="form-group full-width">
+                        <label>Borrowed Books</label>
+                        <div class="borrowed-books-list" id="borrowedBooksList">
+                            <p class="no-books">Select a user to see their borrowed books</p>
+                        </div>
+                    </div>
+
+                    <!-- Return Condition -->
+                    <div class="form-group">
+                        <label for="returnCondition">Book Condition</label>
+                        <select id="returnCondition" name="condition">
+                            <option value="Good">Good</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Poor">Poor</option>
+                            <option value="Damaged">Damaged</option>
+                        </select>
+                    </div>
+
+                    <!-- Late Fee -->
+                    <div class="form-group">
+                        <label for="lateFee">Late Fee ($)</label>
+                        <input type="number" id="lateFee" name="lateFee" min="0" step="0.01" 
+                               placeholder="0.00" readonly>
+                    </div>
+
+                    <!-- Return Notes -->
+                    <div class="form-group full-width">
+                        <label for="returnNotes">Return Notes (Optional)</label>
+                        <textarea id="returnNotes" name="notes" rows="3" 
+                                  placeholder="Any notes about the book condition or return..."></textarea>
+                    </div>
+
+                    <div class="form-actions full-width">
+                        <button type="button" class="btn secondary" onclick="resetReturnForm()">Reset</button>
+                        <button type="submit" class="btn primary" id="returnSubmitBtn" disabled>
+                            <span class="btn-text">Process Return</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="spinner-small"></span>
+                                Processing...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- Renew Book Section -->
+        <main class="transaction-container fade-in" id="renewSection" style="display: none;">
+            <div class="transaction-form">
+                <h2 class="section-title">🔄 Renew Book</h2>
+                
+                <form id="renewForm" class="form-grid">
+                    <!-- User Selection -->
+                    <div class="form-group">
+                        <label for="renewUserId" class="required">Select User</label>
+                        <div class="search-select">
+                            <input type="text" id="renewUserSearch" placeholder="Search by name, email, or member ID..." 
+                                   autocomplete="off">
+                            <div class="search-results" id="renewUserResults"></div>
+                        </div>
+                        <input type="hidden" id="renewUserId" name="userId" required>
+                        <div class="error-message" id="renewUserIdError"></div>
+                    </div>
+
+                    <!-- Renewable Books List -->
+                    <div class="form-group full-width">
+                        <label>Books Available for Renewal</label>
+                        <div class="renewable-books-list" id="renewableBooksList">
+                            <p class="no-books">Select a user to see their renewable books</p>
+                        </div>
+                    </div>
+
+                    <!-- New Due Date -->
+                    <div class="form-group">
+                        <label for="newDueDate">New Due Date</label>
+                        <input type="date" id="newDueDate" name="newDueDate" required>
+                    </div>
+
+                    <!-- Renewal Notes -->
+                    <div class="form-group full-width">
+                        <label for="renewNotes">Renewal Notes (Optional)</label>
+                        <textarea id="renewNotes" name="notes" rows="3" 
+                                  placeholder="Any notes about this renewal..."></textarea>
+                    </div>
+
+                    <div class="form-actions full-width">
+                        <button type="button" class="btn secondary" onclick="resetRenewForm()">Reset</button>
+                        <button type="submit" class="btn primary" id="renewSubmitBtn" disabled>
+                            <span class="btn-text">Process Renewal</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="spinner-small"></span>
+                                Processing...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- Recent Transactions -->
+        <section class="recent-transactions fade-in">
+            <h2>📋 Recent Transactions</h2>
+            <div class="transactions-list" id="recentTransactionsList">
+                <!-- Recent transactions will be loaded here -->
+            </div>
+            <div class="view-all-link">
+                <button class="btn secondary" onclick="goToTransactionHistory()">View All Transactions</button>
+            </div>
+        </section>
+
+        <!-- Success Modal -->
+        <div class="modal-overlay" id="successModal">
+            <div class="modal-content success-modal">
+                <div class="success-icon">✅</div>
+                <h2 id="successTitle">Transaction Successful!</h2>
+                <div class="transaction-details" id="successDetails">
+                    <!-- Transaction details will be shown here -->
+                </div>
+                <p id="successMessage">The transaction has been processed successfully.</p>
+                <div class="modal-actions">
+                    <button class="btn secondary" onclick="closeSuccessModal()">Close</button>
+                    <button class="btn primary" onclick="printReceipt()">Print Receipt</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script src="borrow-return.js"></script>
+</body>
+</html>
